@@ -908,7 +908,9 @@ final class MapboxMapController
   @Override
   public void onCameraTrackingChanged(int currentMode) {
     final Map<String, Object> arguments = new HashMap<>(2);
-    arguments.put("mode", currentMode);
+
+    arguments.put("mode", Arrays.asList(mapboxTrackingModes).indexOf(currentMode));
+
     methodChannel.invokeMethod("map#onCameraTrackingChanged", arguments);
   }
 
@@ -1257,8 +1259,9 @@ final class MapboxMapController
     }
   }
 
-  private void updateMyLocationTrackingMode() {
-    int[] mapboxTrackingModes = new int[] {CameraMode.NONE, CameraMode.TRACKING, CameraMode.TRACKING_COMPASS, CameraMode.TRACKING_GPS};
+  private static Integer[] mapboxTrackingModes = new Integer[] {CameraMode.NONE, CameraMode.TRACKING, CameraMode.TRACKING_COMPASS, CameraMode.TRACKING_GPS};
+
+  private void updateMyLocationTrackingMode() {   
     locationComponent.setCameraMode(mapboxTrackingModes[this.myLocationTrackingMode]);
   }
 
